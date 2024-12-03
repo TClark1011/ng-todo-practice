@@ -9,10 +9,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { CustomValidators } from '../validators';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-todo-list-page',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './todo-list-page.component.html',
   styleUrl: './todo-list-page.component.scss',
 })
@@ -64,5 +65,27 @@ export class TodoListPageComponent {
         this.newTodoForm.reset();
         this.formHasBeenSubmitted = false;
       });
+  }
+
+  async onTodoToggle(e: Event, todoId: string, completed: boolean) {
+    e.preventDefault();
+    this.todos = this.todos.map((todo) => {
+      if (todo.id !== todoId) return todo;
+
+      return {
+        ...todo,
+        completed,
+      };
+    });
+
+    const newTodo = await this.todoService.updateTodoById(todoId, {
+      completed,
+    });
+
+    this.todos = this.todos.map((todo) => {
+      if (todo.id !== todoId) return todo;
+
+      return newTodo;
+    });
   }
 }

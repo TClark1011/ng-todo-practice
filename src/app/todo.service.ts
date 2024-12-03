@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Todo, TodoCreationInput } from './todo';
+import { Todo, TodoCreationInput, TodoUpdateInput } from './todo';
 import { generateId } from './utils';
 
 @Injectable({
@@ -10,6 +10,11 @@ export class TodoService {
 
   async getAllTodos(): Promise<Todo[]> {
     const response = await fetch('http://localhost:3000/todos');
+    return response.json();
+  }
+
+  async getTodoById(id: string): Promise<Todo> {
+    const response = await fetch(`http://localhost:3000/todos/${id}`);
     return response.json();
   }
 
@@ -26,6 +31,20 @@ export class TodoService {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(newTodo),
+    });
+    return response.json();
+  }
+
+  async updateTodoById(
+    id: string,
+    updateInput: TodoUpdateInput
+  ): Promise<Todo> {
+    const response = await fetch(`http://localhost:3000/todos/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updateInput),
     });
     return response.json();
   }

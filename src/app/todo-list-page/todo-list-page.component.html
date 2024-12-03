@@ -18,7 +18,11 @@
 </form>
 <div class="list">
   <div *ngFor="let todo of todos" class="todo">
-    <div class="label">{{ todo.label }}</div>
+    <div class="row">
+      <input (click)="onTodoToggle($event, todo.id, !todo.completed)" type="checkbox" class="checkbox"
+        [checked]="todo.completed" />
+      <a class="label" [routerLink]="['todo', todo.id]">{{ todo.label }}</a>
+    </div>
     <div *ngIf="!!todo.description" class="description">
       {{ todo.description }}
     </div>

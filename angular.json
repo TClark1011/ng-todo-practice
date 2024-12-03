@@ -30,7 +30,6 @@
               }
             ],
             "styles": [
-              // "node_modules/normalize.css/normalize.css",
               "node_modules/open-props/open-props.min.css",
               "src/styles.scss"
             ],

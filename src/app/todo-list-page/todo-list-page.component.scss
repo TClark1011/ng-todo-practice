@@ -65,9 +65,20 @@
   border-radius: var(--radius-card);
 }
 
+.todo .row {
+  display: flex;
+  align-items: center;
+  gap: var(--size-2);
+
+  margin-bottom: var(--size-1);
+}
+
 .todo .label {
   font-weight: bold;
-  margin-bottom: var(--size-1);
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .todo .description {
