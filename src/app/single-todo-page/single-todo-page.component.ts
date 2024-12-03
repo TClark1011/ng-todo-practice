@@ -21,7 +21,7 @@ export class SingleTodoPageComponent {
       throw new Error('No todo ID provided');
     }
 
-    this.todoService.getTodoById(todoId).then((todo) => {
+    this.todoService.getTodoById(todoId).subscribe((todo) => {
       this.todo = todo;
     });
   }

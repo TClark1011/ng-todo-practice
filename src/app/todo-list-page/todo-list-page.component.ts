@@ -32,7 +32,9 @@ export class TodoListPageComponent {
   }
 
   async updateTodos() {
-    this.todos = await this.todoService.getAllTodos();
+    this.todoService.getAllTodos().subscribe((todos) => {
+      this.todos = todos;
+    });
   }
 
   get label() {
@@ -60,14 +62,14 @@ export class TodoListPageComponent {
         label: label.trim(),
         description: description.trim(),
       })
-      .then((newTodo) => {
+      .subscribe((newTodo) => {
         this.todos.push(newTodo);
         this.newTodoForm.reset();
         this.formHasBeenSubmitted = false;
       });
   }
 
-  async onTodoToggle(e: Event, todoId: string, completed: boolean) {
+  onTodoToggle(e: Event, todoId: string, completed: boolean) {
     e.preventDefault();
     this.todos = this.todos.map((todo) => {
       if (todo.id !== todoId) return todo;
@@ -78,14 +80,16 @@ export class TodoListPageComponent {
       };
     });
 
-    const newTodo = await this.todoService.updateTodoById(todoId, {
-      completed,
-    });
+    this.todoService
+      .updateTodoById(todoId, {
+        completed,
+      })
+      .subscribe((newTodo) => {
+        this.todos = this.todos.map((todo) => {
+          if (todo.id !== todoId) return todo;
 
-    this.todos = this.todos.map((todo) => {
-      if (todo.id !== todoId) return todo;
-
-      return newTodo;
-    });
+          return newTodo;
+        });
+      });
   }
 }

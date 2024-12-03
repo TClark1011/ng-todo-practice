@@ -1,51 +1,36 @@
 import { Injectable } from '@angular/core';
 import { Todo, TodoCreationInput, TodoUpdateInput } from './todo';
 import { generateId } from './utils';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TodoService {
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  async getAllTodos(): Promise<Todo[]> {
-    const response = await fetch('http://localhost:3000/todos');
-    return response.json();
+  getAllTodos() {
+    return this.http.get<Todo[]>('http://localhost:3000/todos');
   }
 
-  async getTodoById(id: string): Promise<Todo> {
-    const response = await fetch(`http://localhost:3000/todos/${id}`);
-    return response.json();
+  getTodoById(id: string) {
+    return this.http.get<Todo>(`http://localhost:3000/todos/${id}`);
   }
 
-  async createTodo(newInput: TodoCreationInput): Promise<Todo> {
+  createTodo(newInput: TodoCreationInput) {
     const newTodo: Todo = {
       ...newInput,
       id: generateId(),
       completed: false,
     };
 
-    const response = await fetch('http://localhost:3000/todos', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newTodo),
-    });
-    return response.json();
+    return this.http.post<Todo>('http://localhost:3000/todos', newTodo);
   }
 
-  async updateTodoById(
-    id: string,
-    updateInput: TodoUpdateInput
-  ): Promise<Todo> {
-    const response = await fetch(`http://localhost:3000/todos/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updateInput),
-    });
-    return response.json();
+  updateTodoById(id: string, updateInput: TodoUpdateInput) {
+    return this.http.patch<Todo>(
+      `http://localhost:3000/todos/${id}`,
+      updateInput
+    );
   }
 }
