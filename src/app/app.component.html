@@ -1,18 +1,7 @@
 <main class="main">
-  <h1>Todos</h1>
-  <form [formGroup]="newTodoForm" (submit)="onTodoSubmit($event)">
-    <label for="label">Label</label>
-    <input id="label" type="text" formControlName="label" />
-    <button type="submit">Create New Todo</button>
-  </form>
-  <div class="todo-list">
-    <div *ngFor="let todo of todos">
-      <div>{{ todo.label }}</div>
-    </div>
+  <div class="container">
 
-    <div *ngIf="todos.length === 0">
-      <div>No todos found</div>
-    </div>
+    <app-todo-list-page />
   </div>
 </main>
 

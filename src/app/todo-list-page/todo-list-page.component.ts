@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { TodoService } from './todo.service';
-import { Todo } from './todo';
+import { Todo } from '../todo';
+import { TodoService } from '../todo.service';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -9,26 +8,22 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { TodoListPageComponent } from './todo-list-page/todo-list-page.component';
+import { CustomValidators } from '../validators';
 
 @Component({
-  selector: 'app-root',
-  imports: [
-    RouterOutlet,
-    CommonModule,
-    ReactiveFormsModule,
-    TodoListPageComponent,
-  ],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  selector: 'app-todo-list-page',
+  imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: './todo-list-page.component.html',
+  styleUrl: './todo-list-page.component.scss',
 })
-export class AppComponent {
+export class TodoListPageComponent {
   todos: Todo[] = [];
   todoService = inject(TodoService);
+  formHasBeenSubmitted = false;
 
   newTodoForm = new FormGroup({
-    label: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    description: new FormControl('', [Validators.required]),
+    label: new FormControl('', [CustomValidators.nonEmpty]),
+    description: new FormControl(''),
   });
 
   constructor() {
@@ -39,8 +34,20 @@ export class AppComponent {
     this.todos = await this.todoService.getAllTodos();
   }
 
+  get label() {
+    return this.newTodoForm.get('label');
+  }
+
+  get description() {
+    return this.newTodoForm.get('description');
+  }
+
   onTodoSubmit(e: Event) {
     e.preventDefault();
+    this.formHasBeenSubmitted = true;
+
+    if (!this.newTodoForm.valid) return;
+
     const { label, description } = this.newTodoForm.value;
 
     if (typeof label !== 'string' || typeof description !== 'string') {
@@ -49,12 +56,13 @@ export class AppComponent {
 
     this.todoService
       .createTodo({
-        label,
-        description,
+        label: label.trim(),
+        description: description.trim(),
       })
       .then((newTodo) => {
         this.todos.push(newTodo);
         this.newTodoForm.reset();
+        this.formHasBeenSubmitted = false;
       });
   }
 }

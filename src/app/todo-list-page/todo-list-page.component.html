@@ -1,0 +1,26 @@
+<h1>Todos</h1>
+<form class="new-todo-form" [formGroup]="newTodoForm" (submit)="onTodoSubmit($event)">
+  <label class="field">
+    <div class="label">Label</div>
+    <input type="text" class="input" formControlName="label" />
+    <div *ngIf="label?.invalid && (label?.dirty || label?.touched || formHasBeenSubmitted)" class="error">
+      <div *ngIf="label?.hasError('nonEmpty')">
+        Cannot be empty
+      </div>
+    </div>
+
+  </label>
+  <label class="field">
+    <div class="label">Description</div>
+    <textarea rows="4" class="input" formControlName="description"></textarea>
+  </label>
+  <button type="submit" class="submit">Create</button>
+</form>
+<div class="list">
+  <div *ngFor="let todo of todos" class="todo">
+    <div class="label">{{ todo.label }}</div>
+    <div *ngIf="!!todo.description" class="description">
+      {{ todo.description }}
+    </div>
+  </div>
+</div>
