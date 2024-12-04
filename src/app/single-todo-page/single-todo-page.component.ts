@@ -2,19 +2,20 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TodoService } from '../todo.service';
 import { Todo } from '../todo';
-import { loadingState, ObservableLoader } from '../utils';
 import { CommonModule } from '@angular/common';
+import { LoadingPipe } from '../loading.pipe';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-single-todo-page',
-  imports: [CommonModule],
+  imports: [CommonModule, LoadingPipe],
   templateUrl: './single-todo-page.component.html',
   styleUrl: './single-todo-page.component.scss',
 })
 export class SingleTodoPageComponent {
   route = inject(ActivatedRoute);
   todoService = inject(TodoService);
-  todo$: ObservableLoader<Todo>;
+  todo$: Observable<Todo>;
 
   constructor() {
     const todoId = this.route.snapshot.paramMap.get('id');
@@ -23,6 +24,6 @@ export class SingleTodoPageComponent {
       throw new Error('No todo ID provided');
     }
 
-    this.todo$ = loadingState(this.todoService.getTodoById(todoId));
+    this.todo$ = this.todoService.getTodoById(todoId);
   }
 }

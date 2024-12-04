@@ -1,20 +1,15 @@
 import { Component, inject } from '@angular/core';
 import { Todo } from '../todo';
 import { TodoService } from '../todo.service';
-import { AsyncPipe, CommonModule } from '@angular/common';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CustomValidators } from '../validators';
 import { RouterModule } from '@angular/router';
-import { loadingState, ObservableLoader } from '../utils';
+import { LoadingPipe } from '../loading.pipe';
 
 @Component({
   selector: 'app-todo-list-page',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, LoadingPipe],
   templateUrl: './todo-list-page.component.html',
   styleUrl: './todo-list-page.component.scss',
 })
@@ -22,7 +17,7 @@ export class TodoListPageComponent {
   todoService = inject(TodoService);
   formHasBeenSubmitted = false;
 
-  todos$: ObservableLoader<Todo[]>;
+  todos$ = this.fetchTodos();
   localTodos: Todo[] = []; // local copy that we can send updates to
 
   newTodoForm = new FormGroup({
@@ -30,16 +25,12 @@ export class TodoListPageComponent {
     description: new FormControl(''),
   });
 
-  constructor() {
-    this.todos$ = this.fetchTodos();
-  }
+  constructor() {}
 
-  fetchTodos(): ObservableLoader<Todo[]> {
-    const result$ = loadingState(this.todoService.getAllTodos());
-    result$.subscribe((todosQuery) => {
-      if (todosQuery.status === 'success') {
-        this.localTodos = todosQuery.data;
-      }
+  fetchTodos() {
+    const result$ = this.todoService.getAllTodos();
+    result$.subscribe((todos) => {
+      this.localTodos = todos;
     });
 
     return result$;

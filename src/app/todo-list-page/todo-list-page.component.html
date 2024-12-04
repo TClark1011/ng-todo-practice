@@ -17,7 +17,7 @@
   <button type="submit" class="submit">Create</button>
 </form>
 
-<ng-container *ngIf="todos$ | async as todosQuery">
+<ng-container *ngIf="todos$ | loading | async as todosQuery">
   <div class="list" *ngIf="todosQuery.status === 'success' || !!localTodos.length">
     <div *ngFor="let todo of localTodos" class="todo">
       <div class="row">

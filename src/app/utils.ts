@@ -39,4 +39,4 @@ export const loadingState = <Data>(
     )
   );
 
-export type ObservableLoader<T> = Observable<LoadingState<T>>;
+export type LoadingObservable<T> = Observable<LoadingState<T>>;

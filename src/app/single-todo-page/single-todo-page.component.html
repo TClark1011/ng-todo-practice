@@ -1,4 +1,4 @@
-<div *ngIf="todo$ | async as todoQuery">
+<div *ngIf="todo$ | loading | async as todoQuery">
   <ng-container *ngIf="todoQuery.status === 'success'">
     <h1>{{ todoQuery.data.label }}</h1>
   </ng-container>
