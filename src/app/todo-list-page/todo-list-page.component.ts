@@ -66,6 +66,7 @@ export class TodoListPageComponent {
         this.todos$ = this.fetchTodos();
         this.newTodoForm.reset();
         this.formHasBeenSubmitted = false;
+        this.newTodoForm.get('description')?.setValue('');
       });
   }
 

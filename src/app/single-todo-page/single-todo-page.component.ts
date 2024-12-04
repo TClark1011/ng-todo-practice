@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TodoService } from '../todo.service';
 import { Todo } from '../todo';
 import { CommonModule } from '@angular/common';
@@ -13,8 +13,10 @@ import { Observable } from 'rxjs';
   styleUrl: './single-todo-page.component.scss',
 })
 export class SingleTodoPageComponent {
+  router = inject(Router);
   route = inject(ActivatedRoute);
   todoService = inject(TodoService);
+  todoId: string;
   todo$: Observable<Todo>;
 
   constructor() {
@@ -24,6 +26,15 @@ export class SingleTodoPageComponent {
       throw new Error('No todo ID provided');
     }
 
+    this.todoId = todoId;
     this.todo$ = this.todoService.getTodoById(todoId);
+  }
+
+  deleteTodo() {
+    if (window.confirm('Are you sure you want to delete this todo?')) {
+      this.todoService.deleteTodoById(this.todoId).subscribe(() => {
+        this.router.navigate(['']);
+      });
+    }
   }
 }

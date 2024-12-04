@@ -14,6 +14,11 @@
   --error-fg: var(--red-7);
   --error-bg: hsl(var(--red-9-hsl) / 10%);
 
+  --danger-1: var(--red-7);
+  --danger-2: var(--red-8);
+  --danger-3: var(--red-9);
+  --danger-fg: white;
+
   @media (prefers-color-scheme: dark) {
     --surface-1: var(--stone-12);
     --surface-2: var(--stone-11);
@@ -38,7 +43,6 @@ html * {
 
 body {
   min-height: 100vh;
-  width: 100vw;
 
   background-color: var(--surface-1);
 

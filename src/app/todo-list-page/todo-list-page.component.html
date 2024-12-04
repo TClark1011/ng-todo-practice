@@ -4,9 +4,9 @@
     <div class="label">Label</div>
     <input type="text" class="input" formControlName="label" />
     <div *ngIf="label?.invalid && (label?.dirty || label?.touched || formHasBeenSubmitted)" class="error">
-      <div *ngIf="label?.hasError('nonEmpty')">
+      <ng-content *ngIf="label?.hasError('nonEmpty')">
         Cannot be empty
-      </div>
+      </ng-content>
     </div>
 
   </label>
@@ -33,7 +33,7 @@
   <div *ngIf="todosQuery.status === 'loading' && !localTodos.length">
     Loading...
   </div>
-  <div *ngIf="todosQuery.status === 'error'" class="error">
+  <div *ngIf="todosQuery.status === 'error'" class="todos-error">
     {{ todosQuery.error.message}}
   </div>
 </ng-container>

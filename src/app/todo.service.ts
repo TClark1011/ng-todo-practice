@@ -33,4 +33,8 @@ export class TodoService {
       updateInput
     );
   }
+
+  deleteTodoById(id: string) {
+    return this.http.delete(`http://localhost:3000/todos/${id}`);
+  }
 }
