@@ -18,6 +18,12 @@ export class SingleTodoPageComponent {
   todoService = inject(TodoService);
   todoId: string;
   todo$: Observable<Todo>;
+  localTodo: Todo = {
+    id: '',
+    label: '',
+    description: '',
+    completed: false,
+  };
 
   constructor() {
     const todoId = this.route.snapshot.paramMap.get('id');
@@ -28,6 +34,10 @@ export class SingleTodoPageComponent {
 
     this.todoId = todoId;
     this.todo$ = this.todoService.getTodoById(todoId);
+    this.todo$.subscribe((todo) => {
+      console.log({ todo });
+      this.localTodo = todo;
+    });
   }
 
   deleteTodo() {
@@ -36,5 +46,19 @@ export class SingleTodoPageComponent {
         this.router.navigate(['']);
       });
     }
+  }
+
+  toggleTodo(e: Event) {
+    console.log('Toggled Todo');
+    e.preventDefault();
+    this.todoService
+      .updateTodoById(this.todoId, {
+        completed: !this.localTodo.completed,
+      })
+      .subscribe((updatedTodo) => {
+        console.log({ updatedTodo });
+      });
+
+    this.localTodo.completed = !this.localTodo.completed;
   }
 }

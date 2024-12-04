@@ -1,6 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
+@use "styles/inputs";
+@use "styles/layout";
+@use "styles/type";
 
 :root {
+  --page-gutter: var(--size-4);
+
   --radius-card: var(--radius-2);
 
   // Colors

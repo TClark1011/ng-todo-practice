@@ -1,0 +1,33 @@
+@mixin text-input() {
+  :where(input[type="text"], textarea).input {
+    @content;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-1);
+}
+
+@include text-input {
+  background-color: var(--surface-3);
+  padding: var(--size-2);
+  border-radius: var(--radius-1);
+
+  &:where(textarea) {
+    resize: none;
+  }
+
+  form.ng-submitted &,
+  &.ng-dirty {
+    &.ng-invalid {
+      border: 1px solid var(--error-fg);
+    }
+  }
+}
+
+.field .error {
+  font-style: italic;
+  color: var(--error-fg);
+}

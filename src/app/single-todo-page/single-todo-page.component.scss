@@ -1,3 +1,9 @@
+.header .left {
+  display: flex;
+  align-items: center;
+  gap: var(--size-2);
+}
+
 .description {
   $spacing: var(--size-2);
   padding-top: $spacing;

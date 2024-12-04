@@ -1,10 +1,31 @@
+.top-nav {
+  display: flex;
+  align-items: center;
+
+  padding-left: var(--page-gutter);
+  background-color: var(--surface-2);
+  height: var(--size-8);
+
+  margin-bottom: var(--size-6);
+
+  .home-link {
+    font-size: var(--font-size-4);
+    font-weight: bold;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
 .main {
   display: flex;
   justify-content: center;
 }
 
 .container {
-  padding-top: var(--size-6);
+  padding-left: var(--page-gutter);
+  padding-right: var(--page-gutter);
   max-width: 600px;
   width: 100%;
 }

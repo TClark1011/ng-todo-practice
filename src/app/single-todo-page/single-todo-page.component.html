@@ -1,8 +1,13 @@
-<div *ngIf="todo$ | loading | async as todoQuery">
+<div *ngIf="todo$ && (todo$ | loading | async) as todoQuery">
   <ng-container *ngIf="todoQuery.status === 'success'">
-    <h1>{{ todoQuery.data.label }}</h1>
-    <div class="description" *ngIf="!!todoQuery.data.description">
-      {{ todoQuery.data.description }}
+    <div class="header">
+      <div class="left">
+        <input type="checkbox" [checked]="localTodo.completed" (click)="toggleTodo($event)" />
+        <h1 [class.completed-todo-text]="localTodo.completed">{{ localTodo.label }}</h1>
+      </div>
+    </div>
+    <div class="description" *ngIf="!!localTodo.description">
+      {{ localTodo.description }}
     </div>
     <button class="delete" (click)="deleteTodo()">Delete</button>
   </ng-container>

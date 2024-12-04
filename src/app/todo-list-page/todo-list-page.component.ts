@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Todo } from '../todo';
+import { Todo, todoLabelValidators } from '../todo';
 import { TodoService } from '../todo.service';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -21,8 +21,8 @@ export class TodoListPageComponent {
   localTodos: Todo[] = []; // local copy that we can send updates to
 
   newTodoForm = new FormGroup({
-    label: new FormControl('', [CustomValidators.nonEmpty]),
-    description: new FormControl(''),
+    label: new FormControl('', todoLabelValidators),
+    description: new FormControl('', todoLabelValidators),
   });
 
   constructor() {}

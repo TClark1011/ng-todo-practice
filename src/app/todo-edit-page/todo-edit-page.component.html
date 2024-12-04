@@ -1,0 +1,34 @@
+<div class="header">
+  <h1>
+    @if (!!todoId) {
+    Edit Todo
+    } @else {
+    New Todo
+    }
+  </h1>
+</div>
+<form class="new-todo-form" [formGroup]="todoForm" (submit)="submit($event)">
+  <label class="field">
+    <div class="label">Label</div>
+    <input type="text" class="input" formControlName="label" />
+
+    @if (label?.invalid && (label?.dirty || formHasBeenSubmitted)) {
+    <div class="error">
+      Cannot be empty
+    </div>
+    }
+
+
+  </label>
+  <label class="field">
+    <div class="label">Description</div>
+    <textarea rows="4" class="input" formControlName="description"></textarea>
+  </label>
+  <button type="submit" class="submit">
+    @if (!!todoId) {
+    Save
+    } @else {
+    Create
+    }
+  </button>
+</form>
