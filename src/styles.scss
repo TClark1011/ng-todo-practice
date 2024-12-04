@@ -1,24 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
 
 :root {
+  --radius-card: var(--radius-2);
+
+  // Colors
   --surface-1: var(--stone-1);
   --surface-2: var(--stone-2);
   --surface-3: var(--stone-4);
 
   --fg-1: black;
   --fg-2: var(--stone-9);
-  --error: var(--red-7);
 
-  --radius-card: var(--radius-2);
+  --error-fg: var(--red-7);
+  --error-bg: hsl(var(--red-9-hsl) / 10%);
 
   @media (prefers-color-scheme: dark) {
     --surface-1: var(--stone-12);
     --surface-2: var(--stone-11);
     --surface-3: var(--stone-10);
 
+    --error-fg: var(--red-5);
+
     --fg-1: white;
     --fg-2: var(--stone-5);
-    --error: var(--red-5);
   }
 }
 

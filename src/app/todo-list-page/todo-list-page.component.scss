@@ -30,13 +30,13 @@
 .new-todo-form .field .input.ng-dirty,
 .new-todo-form.ng-submitted .field .input {
   &.ng-invalid {
-    border: 1px solid var(--error);
+    border: 1px solid var(--error-fg);
   }
 }
 
 .new-todo-form .field .error {
   font-style: italic;
-  color: var(--error);
+  color: var(--error-fg);
 }
 
 .new-todo-form .submit {
@@ -69,8 +69,6 @@
   display: flex;
   align-items: center;
   gap: var(--size-2);
-
-  margin-bottom: var(--size-1);
 }
 
 .todo .label {
@@ -82,5 +80,16 @@
 }
 
 .todo .description {
+  padding-left: 20px;
   color: var(--fg-2);
+
+  margin-top: var(--size-2);
+}
+
+.error {
+  background-color: var(--error-bg);
+  color: var(--error-fg);
+
+  padding: var(--size-3);
+  border-radius: var(--radius-card);
 }

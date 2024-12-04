@@ -1,3 +1,5 @@
-<div>
-  <h1>{{ todo?.label }}</h1>
+<div *ngIf="todo$ | async as todoQuery">
+  <ng-container *ngIf="todoQuery.status === 'success'">
+    <h1>{{ todoQuery.data.label }}</h1>
+  </ng-container>
 </div>

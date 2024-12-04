@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Todo } from '../todo';
 import { TodoService } from '../todo.service';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import {
   FormControl,
   FormGroup,
@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { CustomValidators } from '../validators';
 import { RouterModule } from '@angular/router';
+import { loadingState, ObservableLoader } from '../utils';
 
 @Component({
   selector: 'app-todo-list-page',
@@ -18,9 +19,11 @@ import { RouterModule } from '@angular/router';
   styleUrl: './todo-list-page.component.scss',
 })
 export class TodoListPageComponent {
-  todos: Todo[] = [];
   todoService = inject(TodoService);
   formHasBeenSubmitted = false;
+
+  todos$: ObservableLoader<Todo[]>;
+  localTodos: Todo[] = []; // local copy that we can send updates to
 
   newTodoForm = new FormGroup({
     label: new FormControl('', [CustomValidators.nonEmpty]),
@@ -28,13 +31,18 @@ export class TodoListPageComponent {
   });
 
   constructor() {
-    this.updateTodos();
+    this.todos$ = this.fetchTodos();
   }
 
-  async updateTodos() {
-    this.todoService.getAllTodos().subscribe((todos) => {
-      this.todos = todos;
+  fetchTodos(): ObservableLoader<Todo[]> {
+    const result$ = loadingState(this.todoService.getAllTodos());
+    result$.subscribe((todosQuery) => {
+      if (todosQuery.status === 'success') {
+        this.localTodos = todosQuery.data;
+      }
     });
+
+    return result$;
   }
 
   get label() {
@@ -63,7 +71,8 @@ export class TodoListPageComponent {
         description: description.trim(),
       })
       .subscribe((newTodo) => {
-        this.todos.push(newTodo);
+        this.localTodos.push(newTodo);
+        this.todos$ = this.fetchTodos();
         this.newTodoForm.reset();
         this.formHasBeenSubmitted = false;
       });
@@ -71,25 +80,23 @@ export class TodoListPageComponent {
 
   onTodoToggle(e: Event, todoId: string, completed: boolean) {
     e.preventDefault();
-    this.todos = this.todos.map((todo) => {
+    this.localTodos = this.localTodos.map((todo) => {
       if (todo.id !== todoId) return todo;
-
       return {
         ...todo,
         completed,
       };
     });
-
     this.todoService
       .updateTodoById(todoId, {
         completed,
       })
       .subscribe((newTodo) => {
-        this.todos = this.todos.map((todo) => {
+        this.localTodos = this.localTodos.map((todo) => {
           if (todo.id !== todoId) return todo;
-
           return newTodo;
         });
+        this.todos$ = this.fetchTodos();
       });
   }
 }
