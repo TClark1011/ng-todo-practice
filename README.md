@@ -1,4 +1,6 @@
-# NgTodoPractice
+# Todo List Angular Practice
+
+This is project is a todo list SPA built with Angular. I made it so I could practice Angular.
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.2.
 
